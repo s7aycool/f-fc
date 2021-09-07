@@ -2,11 +2,15 @@ package forza.home.assignment.presentation.teams
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import stay.cool.assignment.R
+import forza.home.assignment.R
 
 class TeamsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,6 +27,17 @@ class TeamsActivity : AppCompatActivity() {
 
         viewModel.teams.observe(this) {
             adapter.submitList(it)
+        }
+
+        viewModel.errors.observe(this) {
+            it ?: return@observe
+
+            Snackbar.make(recyclerView, "Fetch failed.", LENGTH_INDEFINITE)
+                .setAction("RETRY") {
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        viewModel.refreshTeams()
+                    }
+                }.show()
         }
     }
 }
