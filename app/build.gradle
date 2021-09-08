@@ -17,7 +17,7 @@ android {
         // Specifies the application ID for the test APK.
         testApplicationId = "forza.home.assignment.test"
         // Specifies the fully-qualified class name of the test instrumentation runner.
-        testInstrumentationRunner = "forza.home.assignment.runner.MockTestRunner"
+        testInstrumentationRunner = "forza.home.assignment.runner.ForzaTestRunner"
         // If set to 'true', enables the instrumentation class to start and stop profiling.
         // If set to false (default), profiling occurs the entire time the instrumentation
         // class is running.
